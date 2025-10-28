@@ -1,10 +1,8 @@
 fetch('https://jsonplaceholder.typicode.com/posts/1')
-.then(Response => Response.json())
-.then(data => {
-    console.log("fgfgfggf:",data);
-})
-.catch(error => {
-    console.error("hdhhdfhf:",error)
-})
-
-
+  .then(response => response.json())
+  .then(data => {
+    console.log("Données reçues :", data);
+  })
+  .catch(error => {
+    console.error("Erreur lors de la récupération :", error);
+  });
