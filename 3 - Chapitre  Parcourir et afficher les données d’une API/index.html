@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تطبيق الطقس</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; padding: 20px; }
+    #weather { background: #fff; padding: 20px; border-radius: 8px; width: 300px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+  <h1>تطبيق الطقس</h1>
+
+  <input type="text" id="cityInput" placeholder="أدخل اسم المدينة">
+  <button id="getWeatherBtn">احصل على الطقس</button>
+
+  <div id="weather"></div>
+
+  <script>
+    const apiKey = "YOUR_API_KEY"; // ضع مفتاحك هنا
+    const weatherDiv = document.getElementById("weather");
+    const btn = document.getElementById("getWeatherBtn");
+    const cityInput = document.getElementById("cityInput");
+
+    btn.addEventListener("click", () => {
+      const city = cityInput.value.trim();
+      if (!city) {
+        alert("من فضلك أدخل اسم المدينة");
+        return;
+      }
+
+      // رابط API
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ar`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error("خطأ في جلب البيانات");
+          return response.json();
+        })
+        .then(data => {
+          // عرض البيانات ديناميكياً
+          weatherDiv.innerHTML = `
+            <h2>الطقس في ${data.name}, ${data.sys.country}</h2>
+            <p>درجة الحرارة: ${data.main.temp}°C</p>
+            <p>الوصف: ${data.weather[0].description}</p>
+            <p>الرطوبة: ${data.main.humidity}%</p>
+            <p>الرياح: ${data.wind.speed} متر/ثانية</p>
+          `;
+        })
+        .catch(error => {
+          weatherDiv.innerHTML = `<p>حدث خطأ: ${error.message}</p>`;
+          console.error(error);
+        });
+    });
+  </script>
+
+</body>
+</html>
